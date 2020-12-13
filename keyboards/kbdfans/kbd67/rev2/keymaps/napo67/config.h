@@ -17,3 +17,6 @@
 #pragma once
 
 // place overrides here
+
+#define UNICODE_SELECTED_MODES UC_WINC
+#define UNICODE_KEY_WINC KC_PSCR
