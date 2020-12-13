@@ -21,7 +21,16 @@ enum custom_keycodes {
 	N_FUNK,
 };
 
-const uint32_t PROGMEM unicode_map[] = {};
+enum unicode_names {
+    EMDSH,
+    ZWSPC,
+};
+
+const uint32_t PROGMEM unicode_map[] = {
+    [EMDSH] = 0x2014,   // Em dash
+    [ZWSPC] = 0x200B,   // Zero width space
+};
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_all(
@@ -32,11 +41,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_LCTL,  KC_LGUI,  KC_LALT,            KC_SPC,             N_FUNK,             KC_SPC,             KC_RALT,  KC_NO,    MO(_FN),  KC_LEFT,  KC_DOWN,  KC_RGHT
 	),
 	[_FN] = LAYOUT_all(
-		KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_TRNS,  EEP_RST,  RESET,     
+		KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   X(EMDSH), KC_F12,   KC_TRNS,  EEP_RST,  RESET,     
 		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,  DEBUG,
 		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                      KC_TRNS,
 		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_PGUP,  KC_TRNS,
-		KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,            KC_TRNS,            KC_TRNS,            KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_HOME,  KC_PGDN,  KC_END
+		KC_TRNS,  KC_TRNS,  KC_TRNS,            X(ZWSPC),           KC_TRNS,            X(ZWSPC),           KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_HOME,  KC_PGDN,  KC_END
 	),
 	[_UNI] = LAYOUT_all(
 		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
