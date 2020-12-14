@@ -22,15 +22,23 @@ enum custom_keycodes {
 };
 
 enum unicode_names {
-    EMDSH,
+    ENDASH,
+    EMDASH,
     ZWSPC,
+    BULL1,
+    BULL2,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
-    [EMDSH] = 0x2014,   // Em dash
-    [ZWSPC] = 0x200B,   // Zero width space
+    [ENDASH] = 0x2013,   // –
+    [EMDASH] = 0x2014,   // —
+    [ZWSPC]  = 0x200B,   // Zero width space
+    [BULL1]  = 0x2022,   // •
+    [BULL2]  = 0x25E6,   // ◦
 };
 
+#define X_DASH XP(EMDASH, ENDASH)
+#define X_BULL XP(BULL1, BULL2)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_all(
@@ -41,18 +49,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_LCTL,  KC_LGUI,  KC_LALT,            KC_SPC,             N_FUNK,             KC_SPC,             KC_RALT,  KC_NO,    MO(_FN),  KC_LEFT,  KC_DOWN,  KC_RGHT
 	),
 	[_FN] = LAYOUT_all(
-		KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   X(EMDSH), KC_F12,   KC_TRNS,  EEP_RST,  RESET,     
-		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,  DEBUG,
-		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                      KC_VOLU,
-		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_PGUP,  KC_VOLD,
-		KC_TRNS,  KC_TRNS,  KC_TRNS,            X(ZWSPC),           KC_TRNS,            X(ZWSPC),           KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_HOME,  KC_PGDN,  KC_END
+		KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   _______,  EEP_RST,  RESET,     
+		_______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,  DEBUG,
+		_______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,                      KC_VOLU,
+		_______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            KC_PGUP,  KC_VOLD,
+		_______,  _______,  _______,            _______,            _______,            _______,            _______,  _______,  _______,  KC_HOME,  KC_PGDN,  KC_END
 	),
 	[_UNI] = LAYOUT_all(
-		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
-		KC_TRNS,  N_SQUARE, N_WIDE,   KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  N_PARENS, KC_TRNS,  KC_TRNS,            KC_TRNS,  KC_TRNS,
-		KC_TRNS,  KC_TRNS,  N_SCRIPT, KC_TRNS,  N_FRAKTR, KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,                      KC_TRNS,
-		KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  N_CIRCLE, KC_TRNS,  N_BLOCKS, N_NORMAL, KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,  KC_TRNS,
-		KC_TRNS,  KC_TRNS,  KC_TRNS,            KC_TRNS,            KC_TRNS,            KC_TRNS,            KC_TRNS,  KC_TRNS,  N_NORMAL, KC_TRNS,  KC_TRNS,  KC_TRNS
+		XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  X_DASH,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+		XXXXXXX,  N_SQUARE, N_WIDE,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_PARENS, XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
+		XXXXXXX,  XXXXXXX,  N_SCRIPT, XXXXXXX,  N_FRAKTR, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                      XXXXXXX,
+		KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_CIRCLE, XXXXXXX,  N_BLOCKS, N_NORMAL, XXXXXXX,  XXXXXXX,  X_BULL,   XXXXXXX,  KC_RSFT,            XXXXXXX,  XXXXXXX,
+		XXXXXXX,  XXXXXXX,  XXXXXXX,            X(ZWSPC),           XXXXXXX,            X(ZWSPC),           XXXXXXX,  XXXXXXX,  N_NORMAL, XXXXXXX,  XXXXXXX,  XXXXXXX
 	)
 };
 
