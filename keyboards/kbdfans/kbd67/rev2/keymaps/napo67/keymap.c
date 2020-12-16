@@ -19,6 +19,7 @@ enum custom_keycodes {
 	N_PARENS,
 	N_FRAKTR,
 	N_FUNK,
+    N_DANCE,
 };
 
 enum unicode_names {
@@ -58,7 +59,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_UNI] = LAYOUT_all(
 		XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  X_DASH,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
 		XXXXXXX,  N_SQUARE, N_WIDE,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_PARENS, XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
-		XXXXXXX,  XXXXXXX,  N_SCRIPT, XXXXXXX,  N_FRAKTR, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                      XXXXXXX,
+		XXXXXXX,  XXXXXXX,  N_SCRIPT, N_DANCE,  N_FRAKTR, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                      XXXXXXX,
 		KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_CIRCLE, XXXXXXX,  N_BLOCKS, N_NORMAL, XXXXXXX,  XXXXXXX,  X_BULL,   XXXXXXX,  KC_RSFT,            XXXXXXX,  XXXXXXX,
 		XXXXXXX,  XXXXXXX,  XXXXXXX,            X(ZWSPC),           XXXXXXX,            X(ZWSPC),           XXXXXXX,  XXXXXXX,  N_NORMAL, XXXXXXX,  XXXXXXX,  XXXXXXX
 	)
@@ -124,6 +125,7 @@ bool process_record_glyph_replacement(uint16_t keycode, keyrecord_t *record, uin
 }
 
 bool faux_lt = false;
+bool n_dance = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	if (record->event.pressed) {
@@ -151,6 +153,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 				n_replace_mode = (n_replace_mode == keycode) ? N_NORMAL : keycode;
 				dprintf("n_replace_mode = %u\n", n_replace_mode);
 				return false;
+            
+            case N_DANCE:
+                n_dance = !n_dance;
+                dprintf("n_dance = %u\n", n_dance);
+                return false;
+            
+            case KC_A ... KC_0:
+                if (n_dance) {
+                    tap_code16(KC_COLON);
+                    tap_code16(keycode);
+                    tap_code16(keycode);
+                    if (keycode == KC_D || keycode == KC_2) { //workaround for other servers that steal :dd: and :22:
+                        tap_code16(KC_TILDE);
+                        tap_code16(KC_1);
+                    }
+                    tap_code16(KC_COLON);
+                    return false;
+                }
 		}
 	} 
 
@@ -182,15 +202,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			} else {
 				if (faux_lt) {
 					n_replace_mode = N_NORMAL;
-					faux_lt = false;
-					dprintf("n_replace_mode = %u\n", n_replace_mode);
+					n_dance = false;
+                    faux_lt = false;
+					dprintf("n_replace_mode = %u, n_dance = %u\n", n_replace_mode, n_dance);
 				}
 				layer_off(_UNI);
 			}
 			return false;
 
 		default: 
-			faux_lt = false;
+            faux_lt = false;
 	}
 
 	return true;
