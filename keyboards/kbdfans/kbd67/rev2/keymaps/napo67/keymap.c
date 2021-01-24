@@ -126,29 +126,9 @@ bool process_record_glyph_replacement(uint16_t keycode, keyrecord_t *record, uin
 }
 
 void regional_indicator_macro(uint16_t keycode) {
-    tap_code16(KC_COLON);
-    tap_code16(KC_R);
-    tap_code16(KC_E);
-    tap_code16(KC_G);
-    tap_code16(KC_I);
-    tap_code16(KC_O);
-    tap_code16(KC_N);
-    tap_code16(KC_A);
-    tap_code16(KC_L);
-    tap_code16(KC_UNDS);
-    tap_code16(KC_I);
-    tap_code16(KC_N);
-    tap_code16(KC_D);
-    tap_code16(KC_I);
-    tap_code16(KC_C);
-    tap_code16(KC_A);
-    tap_code16(KC_T);
-    tap_code16(KC_O);
-    tap_code16(KC_R);
-    tap_code16(KC_UNDS);
+    SEND_STRING(":regional_indicator_");
     tap_code16(keycode);
-    tap_code16(KC_COLON);
-    tap_code16(KC_SPC);
+    SEND_STRING(": ");
 }
 
 bool faux_lt = false;
