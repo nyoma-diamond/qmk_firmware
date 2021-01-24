@@ -39,7 +39,7 @@ const uint32_t PROGMEM unicode_map[] = {
     [BULL2]  = 0x25E6,   // ◦
 };
 
-#define X_DASH XP(EMDASH, ENDASH)
+#define X_DASH XP(ENDASH, EMDASH)
 #define X_BULL XP(BULL1, BULL2)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
