@@ -132,8 +132,6 @@ void regional_indicator_macro(uint16_t keycode) {
 }
 
 bool faux_lt = false;
-//bool n_dance = false;
-//bool n_rgind = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	if (record->event.pressed) {
@@ -158,19 +156,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
 
 			case N_NORMAL ... N_RGIND:
-				n_replace_mode = (n_replace_mode == keycode) ? N_NORMAL : keycode;
-				dprintf("n_replace_mode = %u\n", n_replace_mode);
+				n_replace_mode = keycode;
+				faux_lt = false;
+				dprintf("n_replace_mode = %u, faux_lt = %u\n", n_replace_mode, faux_lt);
 				return false;
-			
-			//case N_DANCE:
-			//	n_dance = !n_dance;
-			//	dprintf("n_dance = %u\n", n_dance);
-			//	return false;
-
-			//case N_RGIND:
-			//	n_rgind = !n_rgind;
-			//	dprintf("n_rgind = %u\n", n_rgind);
-			//	return false;
 		}
 	} 
 
@@ -212,13 +201,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			if (record->event.pressed) {
 				faux_lt = true;
 				layer_on(_UNI);
+				dprintf("N_FUNK pressed.\nn_replace_mode = %u, faux_lt = %u\n", n_replace_mode, faux_lt);
 			} else {
+				dprintf("N_FUNK released.\n");
 				if (faux_lt) {
 					n_replace_mode = N_NORMAL;
-					//n_dance = false;
-					//n_rgind = false;
 					faux_lt = false;
-					dprintf("n_replace_mode = %u\n", n_replace_mode);
+					dprintf("Setting n_replace_mode = %u, faux_lt = %u\n", n_replace_mode, faux_lt);
 				}
 				layer_off(_UNI);
 			}
@@ -226,6 +215,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 		default: 
 			faux_lt = false;
+			dprintf("Default case.\nn_replace_mode = %u, faux_lt = %u\n", n_replace_mode, faux_lt);
 	}
 
 	return true;
