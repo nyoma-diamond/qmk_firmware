@@ -10,7 +10,8 @@ enum userspace_layers {
 };
 
 enum custom_keycodes {
-	N_NORMAL = SAFE_RANGE,
+	N_FUNK = SAFE_RANGE,
+	N_NORMAL,
 	N_WIDE,
 	N_SCRIPT,
 	N_BLOCKS,
@@ -18,25 +19,24 @@ enum custom_keycodes {
 	N_SQUARE,
 	N_PARENS,
 	N_FRAKTR,
-	N_FUNK,
-    N_DANCE,
-    N_RGIND,
+	N_DANCE,
+	N_RGIND,
 };
 
 enum unicode_names {
-    ENDASH,
-    EMDASH,
-    ZWSPC,
-    BULL1,
-    BULL2,
+	ENDASH,
+	EMDASH,
+	ZWSPC,
+	BULL1,
+	BULL2,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
-    [ENDASH] = 0x2013,   // –
-    [EMDASH] = 0x2014,   // —
-    [ZWSPC]  = 0x200B,   // Zero width space
-    [BULL1]  = 0x2022,   // •
-    [BULL2]  = 0x25E6,   // ◦
+	[ENDASH] = 0x2013,   // –
+	[EMDASH] = 0x2014,   // —
+	[ZWSPC]  = 0x200B,   // Zero width space
+	[BULL1]  = 0x2022,   // •
+	[BULL2]  = 0x25E6,   // ◦
 };
 
 #define X_DASH XP(ENDASH, EMDASH)
@@ -126,14 +126,14 @@ bool process_record_glyph_replacement(uint16_t keycode, keyrecord_t *record, uin
 }
 
 void regional_indicator_macro(uint16_t keycode) {
-    SEND_STRING(":regional_indicator_");
-    tap_code16(keycode);
-    SEND_STRING(": ");
+	SEND_STRING(":regional_indicator_");
+	tap_code16(keycode);
+	SEND_STRING(": ");
 }
 
 bool faux_lt = false;
-bool n_dance = false;
-bool n_rgind = false;
+//bool n_dance = false;
+//bool n_rgind = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	if (record->event.pressed) {
@@ -157,43 +157,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 				return false;
 #endif
 
-			case N_NORMAL ... N_FRAKTR:
+			case N_NORMAL ... N_RGIND:
 				n_replace_mode = (n_replace_mode == keycode) ? N_NORMAL : keycode;
 				dprintf("n_replace_mode = %u\n", n_replace_mode);
 				return false;
-            
-            case N_DANCE:
-                n_dance = !n_dance;
-                dprintf("n_dance = %u\n", n_dance);
-                return false;
+			
+			//case N_DANCE:
+			//	n_dance = !n_dance;
+			//	dprintf("n_dance = %u\n", n_dance);
+			//	return false;
 
-            case N_RGIND:
-                n_rgind = !n_rgind;
-                dprintf("n_rgind = %u\n", n_rgind);
-                return false;
-            
-            case KC_A ... KC_0:
-                if (n_dance) {
-                    tap_code16(KC_COLON);
-                    tap_code16(keycode);
-                    tap_code16(keycode);
-                    if (keycode == KC_D || keycode == KC_2) { //workaround for other servers that steal :dd: and :22:
-                        tap_code16(KC_TILDE);
-                        tap_code16(KC_1);
-                    }
-                    tap_code16(KC_COLON);
-                    return false;
-                }
-
-                if (n_rgind) {
-                    regional_indicator_macro(keycode);
-                    return false;
-                }
+			//case N_RGIND:
+			//	n_rgind = !n_rgind;
+			//	dprintf("n_rgind = %u\n", n_rgind);
+			//	return false;
 		}
 	} 
 
 	switch (keycode) {
 		case KC_A ... KC_0:
+			if (n_replace_mode == N_DANCE) {
+				if (record->event.pressed) {
+					tap_code16(KC_COLON);
+					tap_code16(keycode);
+					tap_code16(keycode);
+					if (keycode == KC_D || keycode == KC_2) SEND_STRING("~1"); //workaround for other servers that steal :dd: and :22:
+					tap_code16(KC_COLON);
+				}
+				return false;
+			} else if (n_replace_mode == N_RGIND) {
+				if (record->event.pressed) regional_indicator_macro(keycode);
+				return false;
+			}
 		case KC_SPACE:
 			switch (n_replace_mode) {
 				case N_WIDE:
@@ -220,17 +215,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 			} else {
 				if (faux_lt) {
 					n_replace_mode = N_NORMAL;
-					n_dance = false;
-                    n_rgind = false;
-                    faux_lt = false;
-					dprintf("n_replace_mode = %u, n_dance = %u, n_rgind = %u\n", n_replace_mode, n_dance, n_rgind);
+					//n_dance = false;
+					//n_rgind = false;
+					faux_lt = false;
+					dprintf("n_replace_mode = %u\n", n_replace_mode);
 				}
 				layer_off(_UNI);
 			}
 			return false;
 
 		default: 
-            faux_lt = false;
+			faux_lt = false;
 	}
 
 	return true;
