@@ -165,18 +165,28 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 	switch (keycode) {
 		case KC_A ... KC_0:
-			if (n_replace_mode == N_DANCE) {
-				if (record->event.pressed) {
-					tap_code16(KC_COLON);
-					tap_code16(keycode);
-					tap_code16(keycode);
-					if (keycode == KC_D || keycode == KC_2) SEND_STRING("~1"); //workaround for other servers that steal :dd: and :22:
-					tap_code16(KC_COLON);
+			{
+				uint8_t temp_mod = get_mods();
+#ifndef NO_ACTION_ONESHOT
+				uint8_t temp_osm = get_oneshot_mods();
+#else
+				uint8_t temp_osm = 0;
+#endif
+				if ((((temp_mod | temp_osm) & (MOD_MASK_CTRL | MOD_MASK_ALT | MOD_MASK_GUI))) == 0) {
+					if (n_replace_mode == N_DANCE) {
+						if (record->event.pressed) {
+							tap_code16(KC_COLON);
+							tap_code16(keycode);
+							tap_code16(keycode);
+							if (keycode == KC_D || keycode == KC_2) SEND_STRING("~1"); //workaround for other servers that steal :dd: and :22:
+							tap_code16(KC_COLON);
+						}
+						return false;
+					} else if (n_replace_mode == N_RGIND) {
+						if (record->event.pressed) regional_indicator_macro(keycode);
+						return false;
+					}
 				}
-				return false;
-			} else if (n_replace_mode == N_RGIND) {
-				if (record->event.pressed) regional_indicator_macro(keycode);
-				return false;
 			}
 		case KC_SPACE:
 			switch (n_replace_mode) {
