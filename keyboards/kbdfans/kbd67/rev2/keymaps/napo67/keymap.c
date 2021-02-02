@@ -20,6 +20,8 @@ enum custom_keycodes {
     N_SQUARE,
     N_PARENS,
     N_FRAKTR,
+    N_BOLD,
+    N_MATH,
     N_DANCE,
     N_RGIND,
 };
@@ -63,8 +65,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_UNI] = LAYOUT_all(
 		XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  X_DASH,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
 		XXXXXXX,  N_SQUARE, N_WIDE,   XXXXXXX,  N_RGIND,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_PARENS, XXXXXXX,  XXXXXXX,            XXXXXXX,  XXXXXXX,
-		XXXXXXX,  XXXXXXX,  N_SCRIPT, N_DANCE,  N_FRAKTR, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                      XXXXXXX,
-		KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_CIRCLE, XXXXXXX,  N_BLOCKS, N_NORMAL, XXXXXXX,  XXXXXXX,  X_BULL,   XXXXXXX,  KC_RSFT,            XXXXXXX,  XXXXXXX,
+		XXXXXXX,  XXXXXXX,  N_SCRIPT, N_DANCE,  N_FRAKTR, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_BLOCKS, XXXXXXX,  XXXXXXX,  XXXXXXX,                      XXXXXXX,
+		KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  N_CIRCLE, XXXXXXX,  N_BOLD,   XXXXXXX,  N_MATH,   XXXXXXX,  X_BULL,   XXXXXXX,  KC_RSFT,            XXXXXXX,  XXXXXXX,
 		XXXXXXX,  XXXXXXX,  XXXXXXX,            X(ZWSPC),           XXXXXXX,            X(ZWSPC),           XXXXXXX,  XXXXXXX,  N_NORMAL, XXXXXXX,  XXXXXXX,  XXXXXXX
 	),
     [_BSP] = LAYOUT_all(
@@ -215,6 +217,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     return process_record_glyph_replacement(keycode, record, 0x1F110, 0x1F110, '0', '1', 0x2002);
                 case N_FRAKTR:
                     return process_record_glyph_replacement(keycode, record, 0x1D586, 0x1D56C, '0', '1', 0x2002);
+                case N_BOLD:
+                    return process_record_glyph_replacement(keycode, record, 0x1D41A, 0x1D400, '0', '1', 0x2002);
+                case N_MATH:
+                    return process_record_glyph_replacement(keycode, record, 0x1D552, 0x1D538, '0', '1', 0x2002);
             }
             break;
 
